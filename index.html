@@ -1,0 +1,74 @@
+<html style="height:100%;">
+  <head>
+    <title>SFPL</title>
+    <style>
+      h1 {
+        margin: 0;
+        margin-top: 1.5em;
+        padding: 0;
+        text-align: center;
+        font-size: 5em;
+      }
+      p {
+        text-align: center;
+        font-size: 2em;
+      }
+      a {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1></h1>
+    <p></p>
+    <script type="text/javascript">
+      function setMessage(message, detail) {
+        document.querySelector('h1').innerText = message;
+        document.title = message;
+        if (detail) {
+          document.querySelector('p').innerHTML = detail;
+        }
+      }
+
+      (function() {
+        var rrUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+        var sfplUrl = 'https://sfpl.bibliocommons.com/item/show/'
+        var item = window.location.search.slice(1);
+        var redirectUrl = sfplUrl + item;
+
+        var rrRef = window.open(rrUrl, '_blank');
+        if (rrRef) {
+          window.setTimeout(function() {
+            setMessage("You've been Rick Rolled!");
+            document.addEventListener("visibilitychange", function() {
+              if (document.visibilityState === 'visible') {
+                window.setTimeout(function () {
+                  setMessage('Redirecting...');
+                  window.location = redirectUrl;
+                }, 1000);
+              }
+            });
+          }, 0);
+        } else {
+          if (window.location.hash) {
+            document.querySelector('p').innerHTML = (
+              'Click <a id="link" href="#">here</a>.'
+            );
+            var handle = window.setTimeout(function() {
+              setMessage("You've been Rick Rolled!", "You should have clicked!")
+              window.location = rrUrl;
+            }, 3500);
+            document.querySelector('#link').addEventListener('click', function(e) {
+              e.preventDefault()
+              window.clearTimeout(handle);
+              window.location = redirectUrl;
+            });
+          } else {
+            window.location = redirectUrl;
+          }
+        }
+      }());
+      // localhost:8000?3010737093_doing_good_better#
+    </script>
+  </body>
+</html>
